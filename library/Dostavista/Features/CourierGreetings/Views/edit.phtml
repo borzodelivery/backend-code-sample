@@ -1,0 +1,14 @@
+<?php
+
+use Dostavista\Features\CourierGreetings\Views\CourierGreetingsEditView;
+
+/** @var CourierGreetingsEditView $this */
+
+?>
+<div id="content">
+    <h1 class="content-title">Courier greeting #<?= html($this->greeting->courier_greeting_id) ?></h1>
+    <div class="content-actions">
+        <a href="/dispatcher/courier-greetings">Courier greetings list</a>
+    </div>
+    <?= $this->form->render() ?>
+</div>

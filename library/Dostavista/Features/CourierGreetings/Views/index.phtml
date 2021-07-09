@@ -1,0 +1,51 @@
+<?
+
+use Dostavista\Features\CourierGreetings\Views\CourierGreetingsIndexView;
+use Dostavista\Features\Dispatcher\ViewUtils;
+
+/** @var CourierGreetingsIndexView $this */
+
+?>
+<div id="content">
+    <h1 class="content-title">Courier greetings</h1>
+    <div class="content-actions">
+        <a href="/dispatcher/courier-greetings/add">Add courier greeting</a> |
+        <a href="/dispatcher/courier-greetings/changelog">Changelog</a>
+    </div>
+    <table class="main-list">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Greeting text</th>
+                <th>Allowed time to show</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <? foreach ($this->greetings as $greeting) { ?>
+                <tr>
+                    <td><?= html($greeting->courier_greeting_id) ?></td>
+                    <td><?= html($greeting->greeting_template) ?></td>
+                    <td>
+                        <?= html(date('H:i', strtotime($greeting->allowed_to_show_start_time))) ?>
+                        —
+                        <?= html(date('H:i', strtotime($greeting->allowed_to_show_finish_time))) ?>
+                    </td>
+                    <td>
+                        <a class="button-edit" title="Edit courier greeting" href="<?= urlHtml('/dispatcher/courier-greetings/edit', $greeting->courier_greeting_id) ?>"></a>
+                    </td>
+                    <td>
+                        <?=
+                            ViewUtils::getDeleteFormHtml(
+                                url('/dispatcher/courier-greetings/delete', $greeting->courier_greeting_id),
+                                'Are you sure you want to delete courier greeting #' . $greeting->courier_greeting_id . '?',
+                                'Delete ' . $greeting->courier_greeting_id
+                            );
+                        ?>
+                    </td>
+                </tr>
+            <? } ?>
+        </tbody>
+    </table>
+</div>

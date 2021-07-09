@@ -1,0 +1,11 @@
+{
+    "version": "1.1",
+    "header": "Backend Code Sample",
+    "description": "Простой пример нашего кода для размещения в тексте вакансий",
+    "home": "BACKEND_ARCHITECTURE",
+    "contacts": ["Антон Захаров <zaharov@dostavista.ru>"],
+    "files": ["."],
+    "links": [],
+    "countries": [],
+    "complexity_factor": 0.3
+}

@@ -1,0 +1,19 @@
+<?
+
+use Dostavista\Features\CourierGreetings\Views\CourierGreetingChangelogTableViewBlock;
+use Dostavista\Features\CourierGreetings\Views\CourierGreetingChangelogView;
+
+/** @var CourierGreetingChangelogView $this */
+
+?>
+<div id="content">
+    <? if ($this->greeting) { ?>
+        <h1 class="content-title">Courier greeting #<?= html($this->greeting->courier_greeting_id) ?> changelog</h1>
+    <? } else { ?>
+        <h1 class="content-title">Courier greetings changelog</h1>
+    <? } ?>
+    <div class="content-actions">
+        <a href="/dispatcher/courier-greetings">Courier greetings list</a>
+    </div>
+    <? (new CourierGreetingChangelogTableViewBlock($this->changelog, $this->pagination))->render() ?>
+</div>
