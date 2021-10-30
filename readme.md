@@ -1,12 +1,12 @@
 
-# Dostavista Backend Code Sample
+# Borzo Backend Code Sample
 
-Давайте по шагам разберём на простой задаче, как мы создаём новые фичи в Достависте.
+Давайте по шагам разберём на простой задаче, как мы создаём новые фичи в Борзо (aka Достависте).
 
 Код здесь только ради примера, его не получится запустить, но его можно почитать.
 
 **Да, и приходите работать к нам! У нас интересно.**
-<br>[Наши вакансии на HeadHunter](https://hh.ru/employer/3730831).
+<br>🔥 [Наши вакансии на HeadHunter](https://hh.ru/employer/3730831).
 
 
 ## Задача
@@ -29,17 +29,16 @@
 Чтобы хранить возможные варианты приветствий, создадим таблицу `courier_greetings` в базе данных.
 <br>Для этого добавим новый файл с миграцией в директории [migrations](https://github.com/27cm/backend-code-sample/tree/master/migrations). 
 
-**[migrations/2021-07-09_12-01_create_table_courier_greetings.php](https://github.com/27cm/backend-code-sample/blob/master/migrations/2021-07-09_12-01_create_table_courier_greetings.php)**
+**[migrations/2021-10-30_12-01_create_table_courier_greetings.php](https://github.com/27cm/backend-code-sample/blob/master/migrations/2021-10-30_12-01_create_table_courier_greetings.php)**
 
 ```php
 <?php
 
-use Dostavista\Core\Super;
-use Dostavista\Framework\Database\Migrations\MysqlMigrationAbstract;
+use Dostavista\Framework\Database\Migrations\CreateTableMysqlMigrationAbstract;
 
-return new class() extends MysqlMigrationAbstract {
-    protected function execute(): void {
-        Super::getDb()->query("
+return new class() extends CreateTableMysqlMigrationAbstract {
+    protected function getCreateTableSql(): string {
+        return "
             CREATE TABLE courier_greetings (
                 courier_greeting_id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT COMMENT 'Идентификатор приветствия курьера',
                 greeting_template VARCHAR(1024) NOT NULL COMMENT 'Шаблон с текстом приветствия',
@@ -47,15 +46,15 @@ return new class() extends MysqlMigrationAbstract {
                 allowed_to_show_finish_time TIME NOT NULL DEFAULT '23:59:59' COMMENT 'Допустимое время окончания показа приветствия',
                 is_deleted TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Удалена ли запись',
                 INDEX idx_allowed_to_show_time (allowed_to_show_start_time, allowed_to_show_finish_time)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Личные приветствия курьеров в мобильных приложениях'
-        ");
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Личные приветствия курьеров в мобильных приложениях';
+        ";
     }
 };
 ```
 
 В отдельной миграции наполним нашу таблицу данными.
 
-**[migrations/2021-07-09_12-02_insert_courier_greetings_data.php](https://github.com/27cm/backend-code-sample/blob/master/migrations/2021-07-09_12-02_insert_courier_greetings_data.php)**
+**[migrations/2021-10-30_12-02_insert_courier_greetings_data.php](https://github.com/27cm/backend-code-sample/blob/master/migrations/2021-10-30_12-02_insert_courier_greetings_data.php)**
 
 ```php
 <?php
@@ -64,6 +63,13 @@ use Dostavista\Core\Super;
 use Dostavista\Framework\Database\Migrations\MysqlMigrationAbstract;
 
 return new class() extends MysqlMigrationAbstract {
+    /**
+     * @return string[]
+     */
+    public function getChangedTables(): array {
+        return ['courier_greetings'];
+    }
+
     protected function execute(): void {
         if (Super::getConfig()->isRussia()) {
             Super::getDb()->query("

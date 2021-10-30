@@ -4,6 +4,13 @@ use Dostavista\Core\Super;
 use Dostavista\Framework\Database\Migrations\MysqlMigrationAbstract;
 
 return new class() extends MysqlMigrationAbstract {
+    /**
+     * @return string[]
+     */
+    public function getChangedTables(): array {
+        return ['courier_greetings'];
+    }
+
     protected function execute(): void {
         if (Super::getConfig()->isRussia()) {
             Super::getDb()->query("

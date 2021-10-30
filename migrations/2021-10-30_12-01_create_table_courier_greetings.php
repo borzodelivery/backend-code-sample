@@ -1,11 +1,10 @@
 <?php
 
-use Dostavista\Core\Super;
-use Dostavista\Framework\Database\Migrations\MysqlMigrationAbstract;
+use Dostavista\Framework\Database\Migrations\CreateTableMysqlMigrationAbstract;
 
-return new class() extends MysqlMigrationAbstract {
-    protected function execute(): void {
-        Super::getDb()->query("
+return new class() extends CreateTableMysqlMigrationAbstract {
+    protected function getCreateTableSql(): string {
+        return "
             CREATE TABLE courier_greetings (
                 courier_greeting_id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT COMMENT 'Идентификатор приветствия курьера',
                 greeting_template VARCHAR(1024) NOT NULL COMMENT 'Шаблон с текстом приветствия',
@@ -13,7 +12,7 @@ return new class() extends MysqlMigrationAbstract {
                 allowed_to_show_finish_time TIME NOT NULL DEFAULT '23:59:59' COMMENT 'Допустимое время окончания показа приветствия',
                 is_deleted TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Удалена ли запись',
                 INDEX idx_allowed_to_show_time (allowed_to_show_start_time, allowed_to_show_finish_time)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Личные приветствия курьеров в мобильных приложениях'
-        ");
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Личные приветствия курьеров в мобильных приложениях';
+        ";
     }
 };
