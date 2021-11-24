@@ -27,9 +27,9 @@
 ## Миграции
 
 Чтобы хранить возможные варианты приветствий, создадим таблицу `courier_greetings` в базе данных.
-<br>Для этого добавим новый файл с миграцией в директории [migrations](https://github.com/27cm/backend-code-sample/tree/master/migrations). 
+<br>Для этого добавим новый файл с миграцией в директории [migrations](https://github.com/dostavista/backend-code-sample/tree/master/migrations). 
 
-**[migrations/2021-10-30_12-01_create_table_courier_greetings.php](https://github.com/27cm/backend-code-sample/blob/master/migrations/2021-10-30_12-01_create_table_courier_greetings.php)**
+**[migrations/2021-10-30_12-01_create_table_courier_greetings.php](https://github.com/dostavista/backend-code-sample/blob/master/migrations/2021-10-30_12-01_create_table_courier_greetings.php)**
 
 ```php
 <?php
@@ -54,7 +54,7 @@ return new class() extends CreateTableMysqlMigrationAbstract {
 
 В отдельной миграции наполним нашу таблицу данными.
 
-**[migrations/2021-10-30_12-02_insert_courier_greetings_data.php](https://github.com/27cm/backend-code-sample/blob/master/migrations/2021-10-30_12-02_insert_courier_greetings_data.php)**
+**[migrations/2021-10-30_12-02_insert_courier_greetings_data.php](https://github.com/dostavista/backend-code-sample/blob/master/migrations/2021-10-30_12-02_insert_courier_greetings_data.php)**
 
 ```php
 <?php
@@ -108,7 +108,7 @@ return new class() extends MysqlMigrationAbstract {
 
 Мы не смешиваем весь код в одну кучу, и стараемся аккуратно раскладывать фичи по отдельным папочкам.
 
-Поэтому для нашей новой фичи создадим директорию [library/Dostavista/Features/CourierGreetings](https://github.com/27cm/backend-code-sample/tree/master/library/Dostavista/Features/CourierGreetings).
+Поэтому для нашей новой фичи создадим директорию [library/Dostavista/Features/CourierGreetings](https://github.com/dostavista/backend-code-sample/tree/master/library/Dostavista/Features/CourierGreetings).
 
 Все классы и файлы, относящиеся к этой фиче, будем создавать в этой директории.
 
@@ -117,7 +117,7 @@ return new class() extends MysqlMigrationAbstract {
 
 Чтобы работать с новой таблицей, нужно создать два класса: `CourierGreetingRow` и `CourierGreetingsTable`.
 
-**[library/Dostavista/Features/CourierGreetings/CourierGreetingsTable.php](https://github.com/27cm/backend-code-sample/blob/master/library/Dostavista/Features/CourierGreetings/CourierGreetingsTable.php)**
+**[library/Dostavista/Features/CourierGreetings/CourierGreetingsTable.php](https://github.com/dostavista/backend-code-sample/blob/master/library/Dostavista/Features/CourierGreetings/CourierGreetingsTable.php)**
 
 ```php
 <?php
@@ -156,7 +156,7 @@ class CourierGreetingsTable extends TableAbstract {
 }
 ```
 
-**[library/Dostavista/Features/CourierGreetings/CourierGreetingRow.php](https://github.com/27cm/backend-code-sample/blob/master/library/Dostavista/Features/CourierGreetings/CourierGreetingRow.php)**
+**[library/Dostavista/Features/CourierGreetings/CourierGreetingRow.php](https://github.com/dostavista/backend-code-sample/blob/master/library/Dostavista/Features/CourierGreetings/CourierGreetingRow.php)**
 
 ```php
 <?php
@@ -194,7 +194,7 @@ class CourierGreetingRow extends TableRowAbstract {
 
 Создадим форму:
 
-**[library/Dostavista/Features/CourierGreetings/CourierGreetingForm.php](https://github.com/27cm/backend-code-sample/blob/master/library/Dostavista/Features/CourierGreetings/CourierGreetingForm.php)**
+**[library/Dostavista/Features/CourierGreetings/CourierGreetingForm.php](https://github.com/dostavista/backend-code-sample/blob/master/library/Dostavista/Features/CourierGreetings/CourierGreetingForm.php)**
 
 ```php
 <?php
@@ -259,7 +259,7 @@ class CourierGreetingForm extends FormAbstract {
 
 Теперь создадим контроллер и разрешим к нему доступ только сотрудникам с правами `Permissions::PERM_GROUP_CONTENT_MANAGER`:
 
-**[library/Dostavista/Features/CourierGreetings/CourierGreetingsDispatcherController.php](https://github.com/27cm/backend-code-sample/blob/master/library/Dostavista/Features/CourierGreetings/CourierGreetingsDispatcherController.php)**
+**[library/Dostavista/Features/CourierGreetings/CourierGreetingsDispatcherController.php](https://github.com/dostavista/backend-code-sample/blob/master/library/Dostavista/Features/CourierGreetings/CourierGreetingsDispatcherController.php)**
 
 ```php
 <?php
@@ -379,7 +379,7 @@ class CourierGreetingsDispatcherController extends DispatcherControllerAbstract 
 
 Также не забываем, что наши курьеры работают в разных часовых поясах, поэтому вычисляем местное время в регионе курьера.
 
-**[library/Dostavista/Features/CourierGreetings/CourierGreetingsTable.php](https://github.com/27cm/backend-code-sample/blob/master/library/Dostavista/Features/CourierGreetings/CourierGreetingsTable.php)**
+**[library/Dostavista/Features/CourierGreetings/CourierGreetingsTable.php](https://github.com/dostavista/backend-code-sample/blob/master/library/Dostavista/Features/CourierGreetings/CourierGreetingsTable.php)**
 
 ```php
 <?php
@@ -423,7 +423,7 @@ class CourierGreetingsTable extends TableAbstract {
 
 Чтобы мобильные приложения смогли получить текст приветствия, добавим новый метод в Courier API:
 
-**[library/Dostavista/Features/CourierApi/CourierApiController.php](https://github.com/27cm/backend-code-sample/blob/master/library/Dostavista/Features/CourierApi/CourierApiController.php#L251-L263)**
+**[library/Dostavista/Features/CourierApi/CourierApiController.php](https://github.com/dostavista/backend-code-sample/blob/master/library/Dostavista/Features/CourierApi/CourierApiController.php#L251-L263)**
 
 ```php
 <?php
@@ -462,7 +462,7 @@ class CourierApiController extends ModernApiControllerAbstract {
 Чтобы у мобильных разработчиков была документация, добавим новый метод в схему API.
 Для этого создадим следующий файл:
 
-**[library/Dostavista/Features/CourierApi/api-schema/methods/random-greeting.php](https://github.com/27cm/backend-code-sample/blob/master/library/Dostavista/Features/CourierApi/api-schema/methods/random-greeting.php)**
+**[library/Dostavista/Features/CourierApi/api-schema/methods/random-greeting.php](https://github.com/dostavista/backend-code-sample/blob/master/library/Dostavista/Features/CourierApi/api-schema/methods/random-greeting.php)**
 
 ```php
 <?php
@@ -494,14 +494,14 @@ return [
 ];
 ```
 
-Теперь в курьерской документации появится [новая страница](https://raw.githubusercontent.com/27cm/backend-code-sample/master/.github/api-doc.png) с описанием метода API.
+Теперь в курьерской документации появится [новая страница](https://raw.githubusercontent.com/dostavista/backend-code-sample/master/.github/api-doc.png) с описанием метода API.
 
 
 ## Тесты
 
 Чтобы из тестов можно было вызывать новый метод Courier API, добавим его в `CourierApiHelper`.
 
-**[tests/Dostavista/TestUtils/Api/CourierApiHelper.php](https://github.com/27cm/backend-code-sample/blob/master/tests/Dostavista/TestUtils/Api/CourierApiHelper.php#L54-L66)**
+**[tests/Dostavista/TestUtils/CourierApiHelper.php](https://github.com/dostavista/backend-code-sample/blob/master/tests/Dostavista/TestUtils/CourierApiHelper.php#L54-L66)**
 
 ```php
 <?php
@@ -522,7 +522,7 @@ class CourierApiHelper {
 
 Теперь напишем пару тестов на новый метод Courier API. Создадим новый класс `CourierApiRandomGreetingTest`.
 
-**[tests/Dostavista/Tests/CourierApi/CourierApiRandomGreetingTest.php](https://github.com/27cm/backend-code-sample/blob/master/tests/Dostavista/Tests/CourierApi/CourierApiRandomGreetingTest.php)**
+**[tests/Dostavista/Tests/CourierApi/CourierApiRandomGreetingTest.php](https://github.com/dostavista/backend-code-sample/blob/master/tests/Dostavista/Tests/CourierApi/CourierApiRandomGreetingTest.php)**
 
 ```php
 <?php
