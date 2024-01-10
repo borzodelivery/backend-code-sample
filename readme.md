@@ -27,12 +27,12 @@
 ## Миграции
 
 Чтобы хранить возможные варианты приветствий, создадим таблицу `courier_greetings` в базе данных.
-<br>Для этого добавим новый файл с миграцией в директории [migrations](https://github.com/dostavista/backend-code-sample/tree/master/migrations). 
+<br>Для этого добавим новый файл с миграцией в директории [migrations](https://github.com/borzodelivery/backend-code-sample/tree/master/migrations). 
 
-**[migrations/2021-10-30_12-01_create_table_courier_greetings.php](https://github.com/dostavista/backend-code-sample/blob/master/migrations/2021-10-30_12-01_create_table_courier_greetings.php)**
+**[migrations/main/2021-10-30_12-01_create_table_courier_greetings.php](https://github.com/borzodelivery/backend-code-sample/blob/master/migrations/main/2021-10-30_12-01_create_table_courier_greetings.php)**
 
 ```php
-<?php
+<?php declare(strict_types=1);
 
 use Dostavista\Framework\Database\Migrations\CreateTableMysqlMigrationAbstract;
 
@@ -40,13 +40,13 @@ return new class() extends CreateTableMysqlMigrationAbstract {
     protected function getCreateTableSql(): string {
         return "
             CREATE TABLE courier_greetings (
-                courier_greeting_id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT COMMENT 'Идентификатор приветствия курьера',
-                greeting_template VARCHAR(1024) NOT NULL COMMENT 'Шаблон с текстом приветствия',
-                allowed_to_show_start_time TIME NOT NULL DEFAULT '00:00:00' COMMENT 'Допустимое время начала показа приветствия',
-                allowed_to_show_finish_time TIME NOT NULL DEFAULT '23:59:59' COMMENT 'Допустимое время окончания показа приветствия',
-                is_deleted TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Удалена ли запись',
+                courier_greeting_id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT COMMENT 'Courier Greeting ID',
+                greeting_template VARCHAR(1024) NOT NULL COMMENT 'Template with greeting text',
+                allowed_to_show_start_time TIME NOT NULL DEFAULT '00:00:00' COMMENT 'Allowed to show interval start time',
+                allowed_to_show_finish_time TIME NOT NULL DEFAULT '23:59:59' COMMENT 'Allowed to show interval finish time',
+                is_deleted TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Has the entry been deleted?',
                 INDEX idx_allowed_to_show_time (allowed_to_show_start_time, allowed_to_show_finish_time)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Личные приветствия курьеров в мобильных приложениях';
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Personal greetings for couriers in mobile applications';
         ";
     }
 };
@@ -54,10 +54,10 @@ return new class() extends CreateTableMysqlMigrationAbstract {
 
 В отдельной миграции наполним нашу таблицу данными.
 
-**[migrations/2021-10-30_12-02_insert_courier_greetings_data.php](https://github.com/dostavista/backend-code-sample/blob/master/migrations/2021-10-30_12-02_insert_courier_greetings_data.php)**
+**[migrations/main/2021-10-30_12-02_insert_courier_greetings_data.php](https://github.com/borzodelivery/backend-code-sample/blob/master/migrations/main/2021-10-30_12-02_insert_courier_greetings_data.php)**
 
 ```php
-<?php
+<?php declare(strict_types=1);
 
 use Dostavista\Core\Super;
 use Dostavista\Framework\Database\Migrations\MysqlMigrationAbstract;
@@ -108,7 +108,7 @@ return new class() extends MysqlMigrationAbstract {
 
 Мы не смешиваем весь код в одну кучу, и стараемся аккуратно раскладывать фичи по отдельным папочкам.
 
-Поэтому для нашей новой фичи создадим директорию [library/Dostavista/Features/CourierGreetings](https://github.com/dostavista/backend-code-sample/tree/master/library/Dostavista/Features/CourierGreetings).
+Поэтому для нашей новой фичи создадим директорию [library/Dostavista/Features/CourierGreetings](https://github.com/borzodelivery/backend-code-sample/tree/master/library/Dostavista/Features/CourierGreetings).
 
 Все классы и файлы, относящиеся к этой фиче, будем создавать в этой директории.
 
@@ -117,17 +117,17 @@ return new class() extends MysqlMigrationAbstract {
 
 Чтобы работать с новой таблицей, нужно создать два класса: `CourierGreetingRow` и `CourierGreetingsTable`.
 
-**[library/Dostavista/Features/CourierGreetings/CourierGreetingsTable.php](https://github.com/dostavista/backend-code-sample/blob/master/library/Dostavista/Features/CourierGreetings/CourierGreetingsTable.php)**
+**[library/Dostavista/Features/CourierGreetings/CourierGreetingsTable.php](https://github.com/borzodelivery/backend-code-sample/blob/master/library/Dostavista/Features/CourierGreetings/CourierGreetingsTable.php)**
 
 ```php
-<?php
+<?php declare(strict_types=1);
 
 namespace Dostavista\Features\CourierGreetings;
 
 use Dostavista\Framework\Database\TableAbstract;
 
 /**
- * Таблица с личными приветствиями курьеров в мобильных приложениях.
+ * Table with personal greetings for couriers in mobile applications.
  *
  * @method static CourierGreetingRow|null getRow(array $where = [], string[] $order = [], int|null $offset = null)
  * @method static CourierGreetingRow|null getRowById(int|null $id)
@@ -156,23 +156,23 @@ class CourierGreetingsTable extends TableAbstract {
 }
 ```
 
-**[library/Dostavista/Features/CourierGreetings/CourierGreetingRow.php](https://github.com/dostavista/backend-code-sample/blob/master/library/Dostavista/Features/CourierGreetings/CourierGreetingRow.php)**
+**[library/Dostavista/Features/CourierGreetings/CourierGreetingRow.php](https://github.com/borzodelivery/backend-code-sample/blob/master/library/Dostavista/Features/CourierGreetings/CourierGreetingRow.php)**
 
 ```php
-<?php
+<?php declare(strict_types=1);
 
 namespace Dostavista\Features\CourierGreetings;
 
-use Dostavista\Core\Changelogs\ChangelogTable;
 use Dostavista\Framework\Database\TableRowAbstract;
 
 /**
- * Личное приветствие курьеров в мобильных приложениях.
+ * Personal greeting of couriers in mobile applications.
  *
- * @property int    $courier_greeting_id         Идентификатор приветствия курьера.
- * @property string $greeting_template           Шаблон с текстом приветствия.
- * @property string $allowed_to_show_start_time  Допустимое время начала показа приветствия.
- * @property string $allowed_to_show_finish_time Допустимое время окончания показа приветствия.
+ * @property int    $courier_greeting_id         Courier Greeting ID.
+ * @property string $greeting_template           Template with greeting text
+ * @property string $allowed_to_show_start_time  Allowed to show interval start time. Default is 00:00:00.
+ * @property string $allowed_to_show_finish_time Allowed to show interval finish time. Default is 23:59:59.
+ * @property bool   $is_deleted                  Has the entry been deleted?
  */
 class CourierGreetingRow extends TableRowAbstract {
 }
@@ -194,10 +194,10 @@ class CourierGreetingRow extends TableRowAbstract {
 
 Создадим форму:
 
-**[library/Dostavista/Features/CourierGreetings/CourierGreetingForm.php](https://github.com/dostavista/backend-code-sample/blob/master/library/Dostavista/Features/CourierGreetings/CourierGreetingForm.php)**
+**[library/Dostavista/Features/CourierGreetings/CourierGreetingForm.php](https://github.com/borzodelivery/backend-code-sample/blob/master/library/Dostavista/Features/CourierGreetings/CourierGreetingForm.php)**
 
 ```php
-<?php
+<?php declare(strict_types=1);
 
 namespace Dostavista\Features\CourierGreetings;
 
@@ -207,7 +207,7 @@ class CourierGreetingForm extends FormAbstract {
     public function init(): void {
         parent::init();
 
-        // Шаблон с текстом приветствия
+        // Greeting text template
         $this->addText('greeting_template', [
             'label'       => 'Greeting template',
             'description' => 'Variable %name% is allowed. Example: Hello, %name%!',
@@ -220,7 +220,7 @@ class CourierGreetingForm extends FormAbstract {
             'validators' => [new StringLengthValidator(1, 1024)],
         ]);
 
-        // Допустимое время начала показа приветствия
+        // Allowed to show interval start time
         $this->addText('allowed_to_show_start_time', [
             'label'      => 'Allowed to show interval start time',
             'value'      => '00:00:00',
@@ -230,7 +230,7 @@ class CourierGreetingForm extends FormAbstract {
             'validators' => [new TimeValidator()],
         ]);
 
-        // Допустимое время окончания показа приветствия
+        // Allowed to show interval finish time
         $this->addText('allowed_to_show_finish_time', [
             'label'      => 'Allowed to show interval finish time',
             'value'      => '23:59:59',
@@ -259,17 +259,17 @@ class CourierGreetingForm extends FormAbstract {
 
 Теперь создадим контроллер и разрешим к нему доступ только сотрудникам с правами `Permissions::PERM_GROUP_CONTENT_MANAGER`:
 
-**[library/Dostavista/Features/CourierGreetings/CourierGreetingsDispatcherController.php](https://github.com/dostavista/backend-code-sample/blob/master/library/Dostavista/Features/CourierGreetings/CourierGreetingsDispatcherController.php)**
+**[library/Dostavista/Features/CourierGreetings/CourierGreetingsDispatcherController.php](https://github.com/borzodelivery/backend-code-sample/blob/master/library/Dostavista/Features/CourierGreetings/CourierGreetingsDispatcherController.php)**
 
 ```php
-<?php
+<?php declare(strict_types=1);
 
 namespace Dostavista\Features\CourierGreetings;
 
 // ...
 
 /**
- * Контроллер для страницы с приветствиями курьеров в админке.
+ * Controller for the page with courier greetings in the admin panel.
  */
 class CourierGreetingsDispatcherController extends DispatcherControllerAbstract {
     public static function isActionPermitted(string $action, ?EmployeeRow $user = null): bool {
@@ -277,7 +277,7 @@ class CourierGreetingsDispatcherController extends DispatcherControllerAbstract 
     }
 
     /**
-     * Список приветствий курьеров.
+     * List of courier greetings.
      */
     public function indexAction(): CourierGreetingsIndexView {
         $view = new CourierGreetingsIndexView();
@@ -288,7 +288,7 @@ class CourierGreetingsDispatcherController extends DispatcherControllerAbstract 
     }
 
     /**
-     * Добавление нового приветствия для курьеров.
+     * Creating a new courier greeting.
      */
     public function addAction(): ViewAbstract {
         $form = new CourierGreetingForm();
@@ -310,7 +310,7 @@ class CourierGreetingsDispatcherController extends DispatcherControllerAbstract 
     }
 
     /**
-     * Редактирование приветствия для курьеров.
+     * Editing courier greetings.
      */
     public function editAction(): ViewAbstract {
         $greetingId = (int) $this->getRequest()->getParam('id');
@@ -341,7 +341,7 @@ class CourierGreetingsDispatcherController extends DispatcherControllerAbstract 
     }
 
     /**
-     * Удаление приветствия для курьеров.
+     * Deleting courier greetings.
      */
     public function deleteAction(): ViewAbstract {
         $this->requirePost();
@@ -379,25 +379,28 @@ class CourierGreetingsDispatcherController extends DispatcherControllerAbstract 
 
 Также не забываем, что наши курьеры работают в разных часовых поясах, поэтому вычисляем местное время в регионе курьера.
 
-**[library/Dostavista/Features/CourierGreetings/CourierGreetingsTable.php](https://github.com/dostavista/backend-code-sample/blob/master/library/Dostavista/Features/CourierGreetings/CourierGreetingsTable.php)**
+**[library/Dostavista/Features/CourierGreetings/CourierGreetingsTable.php](https://github.com/borzodelivery/backend-code-sample/blob/master/library/Dostavista/Features/CourierGreetings/CourierGreetingsTable.php)**
 
 ```php
-<?php
+<?php declare(strict_types=1);
 
 namespace Dostavista\Features\CourierGreetings;
 
 // ...
 
 class CourierGreetingsTable extends TableAbstract {
+
+    // ...
+
     /**
-     * Возвращает текст случайного сообщения для курьера.
+     * Returns the text of a random message for the courier.
      */
     public static function getRandomGreetingMessage(CourierRow $courier): ?string {
-        // Определяем местное время в регионе курьера
+        // Determining the local time in the courier's region
         $region    = $courier->getRegion();
         $localTime = $region->getLocalDateTime();
 
-        // Выбираем все подходящие приветствия
+        // Selecting all suitable greetings
         $greetings = [];
         foreach (static::getRowset(['is_deleted = 0']) as $greeting) {
             $startTime  = $region->getLocalDateTime($greeting->allowed_to_show_start_time);
@@ -411,7 +414,7 @@ class CourierGreetingsTable extends TableAbstract {
             return null;
         }
 
-        // Подставляем имя курьера в шаблон
+        // Substitute the courier name into the template
         $greeting = $greetings[array_rand($greetings)];
         return str_ireplace('%name%', $courier->user_name, $greeting->greeting_template);
     }
@@ -423,10 +426,10 @@ class CourierGreetingsTable extends TableAbstract {
 
 Чтобы мобильные приложения смогли получить текст приветствия, добавим новый метод в Courier API:
 
-**[library/Dostavista/Features/CourierApi/CourierApiController.php](https://github.com/dostavista/backend-code-sample/blob/master/library/Dostavista/Features/CourierApi/CourierApiController.php#L251-L263)**
+**[library/Dostavista/Features/CourierApi/CourierApiController.php](https://github.com/borzodelivery/backend-code-sample/blob/master/library/Dostavista/Features/CourierApi/CourierApiController.php#L251-L263)**
 
 ```php
-<?php
+<?php declare(strict_types=1);
 
 namespace Dostavista\Features\CourierApi;
 
@@ -434,7 +437,7 @@ namespace Dostavista\Features\CourierApi;
 
 class CourierApiController extends ModernApiControllerAbstract {
     /**
-     * Возвращает случайно выбранное приветствие для авторизованного курьера.
+     * Returns a randomly selected greeting for an authorized courier.
      */
     public function randomGreetingAction(): JsonView {
         $this->requireGet();
@@ -462,17 +465,17 @@ class CourierApiController extends ModernApiControllerAbstract {
 Чтобы у мобильных разработчиков была документация, добавим новый метод в схему API.
 Для этого создадим следующий файл:
 
-**[library/Dostavista/Features/CourierApi/api-schema/methods/random-greeting.php](https://github.com/dostavista/backend-code-sample/blob/master/library/Dostavista/Features/CourierApi/api-schema/methods/random-greeting.php)**
+**[library/Dostavista/Features/CourierApi/api-schema/methods/random-greeting.php](https://github.com/borzodelivery/backend-code-sample/blob/master/library/Dostavista/Features/CourierApi/api-schema/methods/random-greeting.php)**
 
 ```php
-<?php
+<?php declare(strict_types=1);
 
 use Dostavista\Features\CourierApi\CourierApiController;
 use Dostavista\Framework\ApiSchema\ApiDoc;
 
 return [
-    'title'       => 'Приветствие',
-    'description' => 'Возвращает случайно выбранное приветствие для курьера',
+    'title'       => 'Greeting',
+    'description' => 'Returns a randomly selected greeting for the courier',
 
     /** @see CourierApiController::randomGreetingAction() */
     'path'          => '/random-greeting',
@@ -484,10 +487,10 @@ return [
     'response' => [
         'properties' => [
             'greeting_text' => [
-                'description' => 'Текст приветствия',
+                'description' => 'Greeting text',
                 'type'        => ApiDoc::STRING,
                 'nullable'    => true,
-                'example'     => 'Привет, Игорь!',
+                'example'     => 'Hello, Igor!',
             ],
         ],
     ],
@@ -501,10 +504,10 @@ return [
 
 Чтобы из тестов можно было вызывать новый метод Courier API, добавим его в `CourierApiHelper`.
 
-**[tests/Dostavista/TestUtils/CourierApiHelper.php](https://github.com/dostavista/backend-code-sample/blob/master/tests/Dostavista/TestUtils/CourierApiHelper.php#L54-L66)**
+**[tests/Dostavista/TestUtils/CourierApiHelper.php](https://github.com/borzodelivery/backend-code-sample/blob/master/tests/Dostavista/TestUtils/CourierApiHelper.php#L54-L66)**
 
 ```php
-<?php
+<?php declare(strict_types=1);
 
 namespace Dostavista\TestUtils\Api;
 
@@ -522,10 +525,10 @@ class CourierApiHelper {
 
 Теперь напишем пару тестов на новый метод Courier API. Создадим новый класс `CourierApiRandomGreetingTest`.
 
-**[tests/Dostavista/Tests/CourierApi/CourierApiRandomGreetingTest.php](https://github.com/dostavista/backend-code-sample/blob/master/tests/Dostavista/Tests/CourierApi/CourierApiRandomGreetingTest.php)**
+**[tests/Dostavista/Tests/CourierApi/CourierApiRandomGreetingTest.php](https://github.com/borzodelivery/backend-code-sample/blob/master/tests/Dostavista/Tests/CourierApi/CourierApiRandomGreetingTest.php)**
 
 ```php
-<?php
+<?php declare(strict_types=1);
 
 namespace Dostavista\Tests\CourierApi;
 
@@ -534,13 +537,13 @@ use Dostavista\Features\CourierGreetings\CourierGreetingsTable;
 use Dostavista\Tests\TestCaseAbstract;
 
 /**
- * Тесты приветствий курьера.
- * @covers CourierApiController::randomGreetingAction()
+ * Courier greeting tests.
+ * @see CourierApiController::randomGreetingAction()
  */
 class CourierApiRandomGreetingTest extends TestCaseAbstract {
     /**
-     * Проверяет случай, когда в базе нет подходящих приветствий для курьера.
-     * @covers CourierApiController::randomGreetingAction()
+     * Checks the case when there are no suitable greetings for the courier in the database.
+     * @see CourierApiController::randomGreetingAction()
      */
     public function testRandomGreetingEmpty(): void {
         $courier = $this->getCourierProvider()->getApprovedCourier();
@@ -550,20 +553,20 @@ class CourierApiRandomGreetingTest extends TestCaseAbstract {
     }
 
     /**
-     * Проверяет успешное получение простого приветствия для курьера.
-     * @covers CourierApiController::randomGreetingAction()
+     * Checks successful getting of a simple greeting for the courier.
+     * @see CourierApiController::randomGreetingAction()
      */
     public function testRandomGreetingSimple(): void {
-        // Добавляем приветствие, которое можно показывать в любое время
+        // Add a greeting that can be shown at any time.
         $greeting = CourierGreetingsTable::makeUnsavedRow();
 
-        $greeting->greeting_template = 'Привет, %name%!';
+        $greeting->greeting_template = 'Hello, %name%!';
         $greeting->save();
 
         $courier = $this->getCourierProvider()->getApprovedCourier();
 
         $json = $this->getCourierApiHelper()->getRandomGreeting($courier)->getJson();
-        assertSame('Привет, Курьер!', $json['greeting_text']);
+        assertSame('Hello, Courier!', $json['greeting_text']);
     }
 }
 ```

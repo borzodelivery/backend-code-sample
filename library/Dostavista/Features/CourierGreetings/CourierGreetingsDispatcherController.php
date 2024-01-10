@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Dostavista\Features\CourierGreetings;
 
@@ -18,7 +18,7 @@ use Dostavista\Framework\Pagination;
 use Dostavista\Framework\View\ViewAbstract;
 
 /**
- * Контроллер для страницы с приветствиями курьеров в админке.
+ * Controller for the page with courier greetings in the admin panel.
  */
 class CourierGreetingsDispatcherController extends DispatcherControllerAbstract {
     public static function isActionPermitted(string $action, ?EmployeeRow $user = null): bool {
@@ -26,7 +26,7 @@ class CourierGreetingsDispatcherController extends DispatcherControllerAbstract 
     }
 
     /**
-     * Список приветствий курьеров.
+     * List of courier greetings.
      */
     public function indexAction(): CourierGreetingsIndexView {
         $view = new CourierGreetingsIndexView();
@@ -37,7 +37,7 @@ class CourierGreetingsDispatcherController extends DispatcherControllerAbstract 
     }
 
     /**
-     * Добавление нового приветствия для курьеров.
+     * Creating a new courier greeting.
      */
     public function addAction(): ViewAbstract {
         $form = new CourierGreetingForm();
@@ -59,7 +59,7 @@ class CourierGreetingsDispatcherController extends DispatcherControllerAbstract 
     }
 
     /**
-     * Редактирование приветствия для курьеров.
+     * Editing courier greetings.
      */
     public function editAction(): ViewAbstract {
         $greetingId = (int) $this->getRequest()->getParam('id');
@@ -90,7 +90,7 @@ class CourierGreetingsDispatcherController extends DispatcherControllerAbstract 
     }
 
     /**
-     * Удаление приветствия для курьеров.
+     * Deleting courier greetings.
      */
     public function deleteAction(): ViewAbstract {
         $this->requirePost();
@@ -111,7 +111,7 @@ class CourierGreetingsDispatcherController extends DispatcherControllerAbstract 
     }
 
     /**
-     * История изменений приветствий курьеров.
+     * History of changes to courier greetings.
      */
     public function changelogAction(): ViewAbstract {
         $greetingId = (int) $this->getRequest()->getParam('id');
@@ -123,7 +123,7 @@ class CourierGreetingsDispatcherController extends DispatcherControllerAbstract 
                 'target_id = ?'      => $greeting->courier_greeting_id,
             ];
         } else {
-            // Если ID не указан, то показываем изменения по всем записям
+            // If ID is not specified, then we show changes for all records.
             $where = [
                 'event_type_id IN (?)' => [
                     ChangelogTypesEnum::COURIER_GREETING_CREATED,

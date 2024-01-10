@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Dostavista\Features\CourierGreetings;
 
@@ -8,13 +8,13 @@ use Dostavista\Core\Changelogs\ChangelogTypesEnum;
 use Dostavista\Framework\Database\TableRowAbstract;
 
 /**
- * Личное приветствие курьеров в мобильных приложениях.
+ * Personal greeting of couriers in mobile applications.
  *
- * @property int    $courier_greeting_id         Идентификатор приветствия курьера.
- * @property string $greeting_template           Шаблон с текстом приветствия.
- * @property string $allowed_to_show_start_time  Допустимое время начала показа приветствия. По умолчанию 00:00:00.
- * @property string $allowed_to_show_finish_time Допустимое время окончания показа приветствия. По умолчанию 23:59:59.
- * @property bool   $is_deleted                  Удалена ли запись.
+ * @property int    $courier_greeting_id         Courier Greeting ID.
+ * @property string $greeting_template           Template with greeting text
+ * @property string $allowed_to_show_start_time  Allowed to show interval start time. Default is 00:00:00.
+ * @property string $allowed_to_show_finish_time Allowed to show interval finish time. Default is 23:59:59.
+ * @property bool   $is_deleted                  Has the entry been deleted?
  */
 class CourierGreetingRow extends TableRowAbstract {
     protected function postInsert(): void {

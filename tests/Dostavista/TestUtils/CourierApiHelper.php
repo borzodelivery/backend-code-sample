@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Dostavista\TestUtils;
 
@@ -6,7 +6,7 @@ use Dostavista\Features\CourierApi\CourierApiController;
 use Dostavista\Tests\TestCaseAbstract;
 
 /**
- * Хелпер для вызова методов Courier API.
+ * Helper for calling Courier API methods.
  * @see CourierApiController
  */
 class CourierApiHelper {
@@ -23,5 +23,5 @@ class CourierApiHelper {
         return $this->buildGetRequest('random-greeting', $courier);
     }
 
-    // В реальном проекте тут будут ещё разные вспомогательные методы для тестов...
+    // In a real project there will be various auxiliary methods for tests...
 }
