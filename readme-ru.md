@@ -1,35 +1,35 @@
 
 # Borzo Backend Code Sample
 
-[🇷🇺 Switch to Russian](https://github.com/borzodelivery/backend-code-sample/readme-ru.md)
+[🇬🇧 Switch to English](https://github.com/borzodelivery/backend-code-sample/readme.md)
 
-Let's go step by step through a simple task, how we create new features at Borzo (aka Dostavista).
+Давайте по шагам разберём на простой задаче, как мы создаём новые фичи в Борзо (aka Достависте).
 
-The code here is just for the sake of example, it won't work, but you can read it.
+Код здесь только ради примера, его не получится запустить, но его можно почитать.
 
-**Yeah, and come work for us! It's exciting.**
-<br>🔥 [Our vacancies on HeadHunter](https://hh.ru/employer/3730831).
+**Да, и приходите работать к нам! У нас интересно.**
+<br>🔥 [Наши вакансии на HeadHunter](https://hh.ru/employer/3730831).
 
 
-## Task
+## Задача
 
-In the courier mobile application, you need to make a daily greeting for the courier.
+В курьерском мобильном приложении требуется сделать ежедневное приветствие курьера.
 
-How it will work: the courier opens the app for the first time in a day and sees the greeting for a few seconds.
+Как это будет работать: курьер первый раз за день открывает приложение и несколько секунд видит приветствие.
 
 ![](.github/task.png)
 
-1. The text of the greeting is random each time.<br>
-   Examples: «Hello, Igor», «Good morning, Andrew!», «Buenos dias, amigo!».
-2. Some variants («Good morning», «Good evening») can only be shown at a certain time interval.<br>
-   For example, «Good morning» can be shown only from 5:00 to 10:00.
-3. The list of possible greeting variants and the time to display them can be customized in the admin area.
-   
+1. Текст приветствия каждый раз случайный.<br>
+   Примеры: «Привет, Игорь», «Доброе утро, Андрей!», «Буэнос диас, амиго!».
+2. Некоторые варианты («Доброе утро», «Добрый вечер») можно показывать только в определенный интервал времени.<br>
+   Например, «Доброе утро» пишем только с 5:00 до 10:00.
+3. Список возможных вариантов приветствий и время для их показа можно настраивать в админке.
 
-## Migrations
 
-To store the possible variants of greetings, let's create a `courier_greetings` table in the database.
-<br>To do this, let's add a new migration file in the [migrations](https://github.com/borzodelivery/backend-code-sample/tree/master/migrations) directory. 
+## Миграции
+
+Чтобы хранить возможные варианты приветствий, создадим таблицу `courier_greetings` в базе данных.
+<br>Для этого добавим новый файл с миграцией в директории [migrations](https://github.com/borzodelivery/backend-code-sample/tree/master/migrations). 
 
 **[migrations/main/2021-10-30_12-01_create_table_courier_greetings.php](https://github.com/borzodelivery/backend-code-sample/blob/master/migrations/main/2021-10-30_12-01_create_table_courier_greetings.php)**
 
@@ -54,7 +54,7 @@ return new class() extends CreateTableMysqlMigrationAbstract {
 };
 ```
 
-In a separate migration, let's populate our table with data.
+В отдельной миграции наполним нашу таблицу данными.
 
 **[migrations/main/2021-10-30_12-02_insert_courier_greetings_data.php](https://github.com/borzodelivery/backend-code-sample/blob/master/migrations/main/2021-10-30_12-02_insert_courier_greetings_data.php)**
 
@@ -102,22 +102,22 @@ return new class() extends MysqlMigrationAbstract {
 };
 ```
 
-> ☝️ **Note**<br>
-> Actually in the real project we don't do this manually, but use a special console script that creates migration files.
+> ☝️ **Примечание**<br>
+> На самом деле в боевом проекте мы не делаем это вручную, а используем специальный консольный скрипт, создающий файлы с миграциями.
 
 
-## The directory with the feature files.
+## Директория с файлами фичи
 
-We don't mix all the code into one heap, and we try to neatly put features into separate folders.
+Мы не смешиваем весь код в одну кучу, и стараемся аккуратно раскладывать фичи по отдельным папочкам.
 
-So for our new feature, let's create a directory [library/Dostavista/Features/CourierGreetings](https://github.com/borzodelivery/backend-code-sample/tree/master/library/Dostavista/Features/CourierGreetings).
+Поэтому для нашей новой фичи создадим директорию [library/Dostavista/Features/CourierGreetings](https://github.com/borzodelivery/backend-code-sample/tree/master/library/Dostavista/Features/CourierGreetings).
 
-All classes and files related to this feature will be created in this directory.
+Все классы и файлы, относящиеся к этой фиче, будем создавать в этой директории.
 
 
-## Classes for working with a DB table
+## Классы для работы с таблицей
 
-To work with the new table, you need to create two classes: `CourierGreetingRow` и `CourierGreetingsTable`.
+Чтобы работать с новой таблицей, нужно создать два класса: `CourierGreetingRow` и `CourierGreetingsTable`.
 
 **[library/Dostavista/Features/CourierGreetings/CourierGreetingsTable.php](https://github.com/borzodelivery/backend-code-sample/blob/master/library/Dostavista/Features/CourierGreetings/CourierGreetingsTable.php)**
 
@@ -180,20 +180,21 @@ class CourierGreetingRow extends TableRowAbstract {
 }
 ```
 
-Now you can get data from the database anywhere in the code.
-For example, by calling the `CourierGreetingsTable::getRowById(1)` method you can get a greeting with ID = 1.
 
-> ☝️ **Note**<br>
-> In fact, in the real project we have a console script that creates all these files automatically.
+Теперь в любом месте кода можно получить данные из базы.
+Например, с помощью вызова метода `CourierGreetingsTable::getRowById(1)` можно получить приветствие с ID = 1.
+
+> ☝️ **Примечание**<br>
+> На самом деле в боевом проекте у нас есть консольный скрипт, создающий все эти файлы автоматически.
 
 
-## CRUD in the admin panel
+## CRUD в админке
 
-Let's create a simple [CRUD](https://ru.wikipedia.org/wiki/CRUD) in the admin panel,
-to be able to add, edit and delete greeting variants.
-For this we will need to make a form and a controller.
+Создадим простой [CRUD](https://ru.wikipedia.org/wiki/CRUD) в админке,
+чтобы можно было добавлять, редактировать и удалять варианты приветствий.
+Для этого нам понадобится сделать форму и контроллер.
 
-Let's create a form:
+Создадим форму:
 
 **[library/Dostavista/Features/CourierGreetings/CourierGreetingForm.php](https://github.com/borzodelivery/backend-code-sample/blob/master/library/Dostavista/Features/CourierGreetings/CourierGreetingForm.php)**
 
@@ -254,11 +255,11 @@ class CourierGreetingForm extends FormAbstract {
 }
 ```
 
-The form will allow you to create and edit greetings. This is how it will look like in the admin panel:
+Форма позволит создавать и редактировать приветствия. Вот так это будет выглядеть в админке:
 
 ![](.github/form.png)
 
-Now let's create a controller and allow only employees with `Permissions::PERM_GROUP_CONTENT_MANAGER` permissions to access it:
+Теперь создадим контроллер и разрешим к нему доступ только сотрудникам с правами `Permissions::PERM_GROUP_CONTENT_MANAGER`:
 
 **[library/Dostavista/Features/CourierGreetings/CourierGreetingsDispatcherController.php](https://github.com/borzodelivery/backend-code-sample/blob/master/library/Dostavista/Features/CourierGreetings/CourierGreetingsDispatcherController.php)**
 
@@ -364,21 +365,21 @@ class CourierGreetingsDispatcherController extends DispatcherControllerAbstract 
 }
 ```
 
-We'll get a page like this in the admin panel:
+Получим вот такую страницу в админке:
 
 ![](.github/index.png)
 
-> ☝️ **Note**<br>
-> In fact, in the real project we have a console script that creates all these files automatically.
+> ☝️ **Примечание**<br>
+> На самом деле в боевом проекте у нас есть консольный скрипт, создающий все эти файлы автоматически.
 
 
-## Business logic
+## Бизнес-логика
 
-It's time to describe the business logic of our new feature. Since the logic here is very simple, we will create
-a method directly in the `CourierGreetingsTable` class. We often do thisso that we don't have to create abstractions for growth.
-When the logic becomes more complex, only at this point we separate it into a separate class `CourierGreetingManager`.
+Самое время описать бизнес-логику нашей новой фичи. Так как тут у нас логика очень простая,
+то создадим метод прямо в классе `CourierGreetingsTable`. Мы часто так делаем, чтобы не создавать абстракций на вырост.
+Когда логика станет сильно сложнее, только в этот момент мы выделяем её в отдельный класс `CourierGreetingManager`.
 
-Also do not forget that our couriers work in different time zones, so we calculate the local time in the region of the courier.
+Также не забываем, что наши курьеры работают в разных часовых поясах, поэтому вычисляем местное время в регионе курьера.
 
 **[library/Dostavista/Features/CourierGreetings/CourierGreetingsTable.php](https://github.com/borzodelivery/backend-code-sample/blob/master/library/Dostavista/Features/CourierGreetings/CourierGreetingsTable.php)**
 
@@ -425,7 +426,7 @@ class CourierGreetingsTable extends TableAbstract {
 
 ## API
 
-In order for mobile apps to get the welcome text, let's add a new method to the Courier API:
+Чтобы мобильные приложения смогли получить текст приветствия, добавим новый метод в Courier API:
 
 **[library/Dostavista/Features/CourierApi/CourierApiController.php](https://github.com/borzodelivery/backend-code-sample/blob/master/library/Dostavista/Features/CourierApi/CourierApiController.php#L251-L263)**
 
@@ -455,16 +456,16 @@ class CourierApiController extends ModernApiControllerAbstract {
 }
 ```
 
-Apps will now be able to invoke this method with an authorized courier session and receive a random greeting.
+Теперь приложения смогут обратиться к этому методу с авторизованной сессией курьера и получить случайное приветствие.
 
-> ☝️ **Note**<br>
-> We have API Design Guidelines in development that we follow to create a good API.
+> ☝️ **Примечание**<br>
+> У нас в разработке есть API Design Guidelines, которым мы следуем, чтобы создавать хорошее API.
 
 
 ## API Schema
 
-In order for mobile developers to have documentation, let's add a new method to the API schema.
-To do this, let's create the following file:
+Чтобы у мобильных разработчиков была документация, добавим новый метод в схему API.
+Для этого создадим следующий файл:
 
 **[library/Dostavista/Features/CourierApi/api-schema/methods/random-greeting.php](https://github.com/borzodelivery/backend-code-sample/blob/master/library/Dostavista/Features/CourierApi/api-schema/methods/random-greeting.php)**
 
@@ -498,12 +499,12 @@ return [
 ];
 ```
 
-A [new page](https://raw.githubusercontent.com/dostavista/backend-code-sample/master/.github/api-doc.png) describing the API method will now appear in the courier documentation.
+Теперь в курьерской документации появится [новая страница](https://raw.githubusercontent.com/dostavista/backend-code-sample/master/.github/api-doc.png) с описанием метода API.
 
 
-## Tests
+## Тесты
 
-To allow the new Courier API method to be called from the tests, let's add it to `CourierApiHelper`.
+Чтобы из тестов можно было вызывать новый метод Courier API, добавим его в `CourierApiHelper`.
 
 **[tests/Dostavista/TestUtils/CourierApiHelper.php](https://github.com/borzodelivery/backend-code-sample/blob/master/tests/Dostavista/TestUtils/CourierApiHelper.php#L54-L66)**
 
@@ -524,7 +525,7 @@ class CourierApiHelper {
 }
 ```
 
-Now let's write a couple of tests for the new Courier API method. Create a new class `CourierApiRandomGreetingTest`.
+Теперь напишем пару тестов на новый метод Courier API. Создадим новый класс `CourierApiRandomGreetingTest`.
 
 **[tests/Dostavista/Tests/CourierApi/CourierApiRandomGreetingTest.php](https://github.com/borzodelivery/backend-code-sample/blob/master/tests/Dostavista/Tests/CourierApi/CourierApiRandomGreetingTest.php)**
 
@@ -572,9 +573,9 @@ class CourierApiRandomGreetingTest extends TestCaseAbstract {
 }
 ```
 
-> ☝️ **Note**<br>
-> We have Coding Guidelines in development that we follow to write good tests.
+> ☝️ **Примечание**<br>
+> У нас в разработке есть Coding Guidelines, которым мы следуем, чтобы писать хорошие тесты.
 
-That's all.
-<br>All that remains is to push the branch, make sure that Teamcity passes all the tests, and create a pull request.
-<br>And soon the feature will be released in production.
+Вот и всё.
+<br>Остаётся запушить ветку, убедиться, что в Teamcity пройдут все тесты, и создать пулл-риквест.
+<br>И вскоре фича попадёт на продакшн.
