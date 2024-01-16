@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Dostavista\Features\CourierGreetings;
 
@@ -13,7 +13,7 @@ class CourierGreetingForm extends FormAbstract {
     public function init(): void {
         parent::init();
 
-        // Шаблон с текстом приветствия
+        // Greeting text template
         $this->addText('greeting_template', [
             'label'       => 'Greeting template',
             'description' => 'Variable %name% is allowed. Example: Hello, %name%!',
@@ -26,7 +26,7 @@ class CourierGreetingForm extends FormAbstract {
             'validators' => [new StringLengthValidator(1, 1024)],
         ]);
 
-        // Допустимое время начала показа приветствия
+        // Allowed to show interval start time
         $this->addText('allowed_to_show_start_time', [
             'label'      => 'Allowed to show interval start time',
             'value'      => '00:00:00',
@@ -36,7 +36,7 @@ class CourierGreetingForm extends FormAbstract {
             'validators' => [new TimeValidator()],
         ]);
 
-        // Допустимое время окончания показа приветствия
+        // Allowed to show interval finish time
         $this->addText('allowed_to_show_finish_time', [
             'label'      => 'Allowed to show interval finish time',
             'value'      => '23:59:59',

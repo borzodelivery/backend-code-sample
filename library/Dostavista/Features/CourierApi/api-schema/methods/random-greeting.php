@@ -1,11 +1,11 @@
-<?php
+<?php declare(strict_types=1);
 
 use Dostavista\Features\CourierApi\CourierApiController;
 use Dostavista\Framework\ApiSchema\ApiDoc;
 
 return [
-    'title'       => 'Приветствие',
-    'description' => 'Возвращает случайно выбранное приветствие для курьера',
+    'title'       => 'Greeting',
+    'description' => 'Returns a randomly selected greeting for the courier',
 
     /** @see CourierApiController::randomGreetingAction() */
     'path'          => '/random-greeting',
@@ -17,10 +17,10 @@ return [
     'response' => [
         'properties' => [
             'greeting_text' => [
-                'description' => 'Текст приветствия',
+                'description' => 'Greeting text',
                 'type'        => ApiDoc::STRING,
                 'nullable'    => true,
-                'example'     => 'Привет, Игорь!',
+                'example'     => 'Hello, Igor!',
             ],
         ],
     ],

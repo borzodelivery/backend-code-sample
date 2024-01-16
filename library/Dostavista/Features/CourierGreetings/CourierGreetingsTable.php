@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Dostavista\Features\CourierGreetings;
 
@@ -6,7 +6,7 @@ use Dostavista\Core\Couriers\CourierRow;
 use Dostavista\Framework\Database\TableAbstract;
 
 /**
- * Таблица с личными приветствиями курьеров в мобильных приложениях.
+ * Table with personal greetings for couriers in mobile applications.
  *
  * @method static CourierGreetingRow|null getRow(array $where = [], string[] $order = [], int|null $offset = null)
  * @method static CourierGreetingRow|null getRowById(int|null $id)
@@ -25,18 +25,23 @@ use Dostavista\Framework\Database\TableAbstract;
  * @method static CourierGreetingRow[] warmupGetRowsetByForeignKeysCache(string $fieldName, int[] $foreignKeyIds)
  */
 class CourierGreetingsTable extends TableAbstract {
-    protected string $name     = 'courier_greetings';
-    protected string $rowClass = CourierGreetingRow::class;
+    public static function getTableName(): string {
+        return 'courier_greetings';
+    }
+
+    public static function getRowClass(): string {
+        return CourierGreetingRow::class;
+    }
 
     /**
-     * Возвращает текст случайного сообщения для курьера.
+     * Returns the text of a random message for the courier.
      */
     public static function getRandomGreetingMessage(CourierRow $courier): ?string {
-        // Определяем местное время в регионе курьера
+        // Determining the local time in the courier's region
         $region    = $courier->getRegion();
         $localTime = $region->getLocalDateTime();
 
-        // Выбираем все подходящие приветствия
+        // Selecting all suitable greetings
         $greetings = [];
         foreach (static::getRowset(['is_deleted = 0']) as $greeting) {
             $startTime  = $region->getLocalDateTime($greeting->allowed_to_show_start_time);
@@ -50,7 +55,7 @@ class CourierGreetingsTable extends TableAbstract {
             return null;
         }
 
-        // Подставляем имя курьера в шаблон
+        // Substitute the courier name into the template
         $greeting = $greetings[array_rand($greetings)];
         return str_ireplace('%name%', $courier->user_name, $greeting->greeting_template);
     }

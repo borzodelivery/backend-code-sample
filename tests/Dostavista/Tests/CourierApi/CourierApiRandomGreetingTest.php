@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Dostavista\Tests\CourierApi;
 
@@ -7,13 +7,13 @@ use Dostavista\Features\CourierGreetings\CourierGreetingsTable;
 use Dostavista\Tests\TestCaseAbstract;
 
 /**
- * Тесты приветствий курьера.
- * @covers CourierApiController::randomGreetingAction()
+ * Courier greeting tests.
+ * @see CourierApiController::randomGreetingAction()
  */
 class CourierApiRandomGreetingTest extends TestCaseAbstract {
     /**
-     * Проверяет случай, когда в базе нет подходящих приветствий для курьера.
-     * @covers CourierApiController::randomGreetingAction()
+     * Checks the case when there are no suitable greetings for the courier in the database.
+     * @see CourierApiController::randomGreetingAction()
      */
     public function testRandomGreetingEmpty(): void {
         $courier = $this->getCourierProvider()->getApprovedCourier();
@@ -23,19 +23,19 @@ class CourierApiRandomGreetingTest extends TestCaseAbstract {
     }
 
     /**
-     * Проверяет успешное получение простого приветствия для курьера.
-     * @covers CourierApiController::randomGreetingAction()
+     * Checks successful getting of a simple greeting for the courier.
+     * @see CourierApiController::randomGreetingAction()
      */
     public function testRandomGreetingSimple(): void {
-        // Добавляем приветствие, которое можно показывать в любое время
+        // Add a greeting that can be shown at any time.
         $greeting = CourierGreetingsTable::makeUnsavedRow();
 
-        $greeting->greeting_template = 'Привет, %name%!';
+        $greeting->greeting_template = 'Hello, %name%!';
         $greeting->save();
 
         $courier = $this->getCourierProvider()->getApprovedCourier();
 
         $json = $this->getCourierApiHelper()->getRandomGreeting($courier)->getJson();
-        assertSame('Привет, Курьер!', $json['greeting_text']);
+        assertSame('Hello, Courier!', $json['greeting_text']);
     }
 }

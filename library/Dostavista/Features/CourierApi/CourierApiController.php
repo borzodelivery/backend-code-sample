@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Dostavista\Features\CourierApi;
 
@@ -8,11 +8,11 @@ use Dostavista\Features\ModernApi\TypeCaster;
 use Dostavista\Framework\View\JsonView;
 
 /**
- * Courier API для курьерских мобильных приложений.
+ * Courier API for courier mobile applications.
  */
 class CourierApiController extends ModernApiControllerAbstract {
     /**
-     * Возвращает случайно выбранное приветствие для авторизованного курьера.
+     * Returns a randomly selected greeting for an authorized courier.
      */
     public function randomGreetingAction(): JsonView {
         $this->requireGet();
@@ -25,5 +25,5 @@ class CourierApiController extends ModernApiControllerAbstract {
         ]);
     }
 
-    // В реальном проекте тут будут ещё разные другие методы...
+    // In a real project there will be various other methods...
 }
