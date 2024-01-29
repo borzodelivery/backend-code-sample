@@ -1,7 +1,7 @@
 
 # Borzo Backend Code Sample
 
-[🇬🇧 Switch to English](https://github.com/borzodelivery/backend-code-sample/readme.md)
+🇬🇧 [Switch to English](readme.md)
 
 Давайте по шагам разберём на простой задаче, как мы создаём новые фичи в Борзо (aka Достависте).
 

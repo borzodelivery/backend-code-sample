@@ -1,7 +1,7 @@
 
 # Borzo Backend Code Sample
 
-[🇷🇺 Switch to Russian](https://github.com/borzodelivery/backend-code-sample/readme-ru.md)
+🇷🇺 [Switch to Russian](readme-ru.md)
 
 Let's go step by step through a simple task, how we create new features at Borzo (aka Dostavista).
 
